@@ -41,4 +41,7 @@ public class Group {
 
     @OneToMany(mappedBy = "group")
     private List<Class> classes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "group")
+    private List<Subject> subjects = new ArrayList<>();
 }
