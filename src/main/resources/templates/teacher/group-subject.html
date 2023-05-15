@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Group Subject Table</title>
+    <title>Daybook - Student Attendance and Marks</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        th {
+            background-color: lightgray;
+        }
+
+        .Lab {
+            background-color: deepskyblue;
+        }
+
+        .Practice {
+            background-color: #7ad37a;
+        }
+
+        .Lecture {
+            background-color: #e0e092;
+        }
+    </style>
+</head>
+<body>
+<h1>Group: <span th:text="${group.groupName}"></span></h1>
+<h2>Subject: <span th:text="${subject.subjectName}"></span></h2>
+<h2>Teacher: <span th:text="${user.firstName + ' ' + user.lastName}"></span></h2>
+<!-- Add button or link to open the modal -->
+<!-- Button to trigger the modal -->
+<!-- Button to open the modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lessonModal">
+    Create Lesson
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="lessonModal" tabindex="-1" role="dialog" aria-labelledby="lessonModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="lessonModalLabel">Create Lesson</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="lessonForm">
+                    <div class="form-group">
+                        <label for="teacher">Teacher</label>
+                        <input type="text" class="form-control" id="teacher" name="teacherId"
+                               th:value="${user.firstName + ' ' + user.lastName}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="group">Group</label>
+                        <input type="text" class="form-control" id="group" name="groupId" th:value="${group.groupName}"
+                               readonly hidden="hidden">
+                    </div>
+                    <div class="form-group">
+                        <label for="classType">Class Type</label>
+                        <select id="classType" name="classTypeId" class="form-control"
+                                th:field="*{lesson.classType.id}">
+                            <option th:each="classType : ${classTypes}" th:value="${classType.id}"
+                                    th:text="${classType.classType}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" class="form-control" id="subject" name="subjectId"
+                               th:value="${subject.subjectName}" readonly hidden="hidden">
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" class="form-control" id="date" name="dateOfClass">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="createLesson()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function createLesson() {
+        // Get the form data
+        var form = document.getElementById("lessonForm");
+        var formData = new FormData(form);
+
+        // Convert form data to JSON object
+        var lessonData = {};
+        formData.forEach(function (value, key) {
+            lessonData[key] = value;
+        });
+
+        // Send the JSON data via AJAX
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/lessons", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // Request successful, refresh the page or update the table
+                location.reload(); // Example: Refresh the page
+            } else if (xhr.readyState === 4 && xhr.status !== 200) {
+                // Request failed, log the error response
+                console.error(xhr.responseText);
+            }
+        };
+        xhr.send(JSON.stringify(lessonData));
+    }
+</script>
+
+<table>
+    <thead>
+    <tr>
+        <th>N</th>
+        <th>Student</th>
+        <th th:each="lesson : ${lessons}" th:class="${lesson.classType.classType}">
+            <span th:text="${lesson.dateOfClass}"></span>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through students -->
+    <tr th:each="student : ${students}">
+        <td><span th:text="${students.indexOf(student) + 1}"></span></td>
+        <td th:text="${student.user.firstName + ' ' + student.user.lastName}"></td>
+        <td th:each="lesson : ${lessons}">
+            <span th:with="foundMark = ${false}"></span>
+            <span th:with="foundAttend = ${false}"></span>
+            <span th:each="mark : ${student.marks}">
+            <span th:if="${mark.lessonEntity.dateOfClass.equals(lesson.dateOfClass)}">
+                <span th:text="${mark.mark}"></span>
+                <br/>
+                <span th:with="foundMark = ${true}"></span>
+            </span>
+        </span>
+            <span th:unless="${foundMark}">
+            <span th:each="attend : ${student.attends}">
+                <span th:if="${attend.lessonId.dateOfClass.equals(lesson.dateOfClass)}">
+                    <span th:text="${attend.attendedAtClass ? '' : 'Absent'}"></span>
+                    <br/>
+                    <span th:with="foundAttend = ${true}"></span>
+                </span>
+            </span>
+        </span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

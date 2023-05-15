@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/teacher-subjects.css}"/>
+</head>
+<body>
+<h1>PD-44</h1>
+<h2>email: pd44@dut.com</h2>
+<h2>Head of group: Mykyta Medko</h2>
+<h3>email: medko@dut.com</h3>
+
+<table>
+    <thead>
+    <tr>
+        <th>N</th>
+        <th>Student</th>
+        <th>Email</th>
+        <th>Phone number</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through students -->
+    <tr th:each="student : ${students}">
+        <td><span th:text="${students.indexOf(student) + 1}"></span></td>
+        <td th:text="${student.user.firstName + ' ' + student.user.lastName}"></td>
+        <td th:text="${student.user.email}"></td>
+        <td th:text="${student.user.phoneNumber}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Subjects:</h2>
+<ul>
+    <li th:each="subject : ${subjects}">
+        <a th:href="@{'/teacher/subjects/' + ${groupId} + '/' + ${subject.id} + '/table'}"><span
+                th:text="${subject.subjectName}"></span></a>
+    </li>
+</ul>
+</body>
+</html>

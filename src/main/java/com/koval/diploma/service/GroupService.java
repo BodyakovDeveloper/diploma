@@ -1,23 +1,15 @@
 package com.koval.diploma.service;
 
-import com.koval.diploma.entity.Student;
-import com.koval.diploma.repository.GroupRepository;
-import com.koval.diploma.repository.StudentRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.koval.diploma.model.Group;
+import com.koval.diploma.model.Student;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class GroupService {
+public interface GroupService {
 
-    private final GroupRepository groupRepository;
-    private final StudentRepository studentRepository;
+    List<Student> getStudentsByGroup(Long groupId);
 
-    public List<Student> getStudentsByGroup(Long groupId) {
+    List<Group> getGroupsForTeacher(String currentPrincipalName);
 
-        return studentRepository.getStudentsByGroup(groupId)
-                .orElseThrow(() -> new IllegalArgumentException("Student with groupId: " + groupId + " not found"));
-    }
+    Group getGroupById(Long groupId);
 }

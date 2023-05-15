@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/groups.css}"/>
+</head>
+<body>
+
+<a th:href="@{/admin/dashboard}" class="button">Dashboard</a>
+
+<button id="open-group-modal-btn">Add Group</button>
+
+<div id="create-group-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-group">&times;</span>
+        <h2>Create Subject</h2>
+
+        <form th:action="@{/admin/groups}" th:object="${newGroup}" method="post">
+            <label for="groupName">Group Name:</label>
+            <input type="text" id="groupName" th:field="*{groupName}" required/><br/>
+
+            <!-- Add other fields or input elements as needed -->
+
+            <button type="submit">Create</button>
+        </form>
+    </div>
+</div>
+<h1>All groups</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="group : ${groups}">
+        <td th:text="${group.id}"></td>
+        <td th:text="${group.groupName}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+<script>
+
+    <!--            Group modal            -->
+    var groupModal = document.getElementById("create-group-modal");
+
+    // Get the button that opens the modal
+    var groupBtn = document.getElementById("open-group-modal-btn");
+
+    // Get the <span> element that closes the modal
+    var groupSpan = document.getElementsByClassName("close-group")[0];
+
+    // Open the modal when the button is clicked
+    groupBtn.onclick = function () {
+        groupModal.style.display = "block";
+    }
+
+    // Close the modal when the <span> (x) is clicked
+    groupSpan.onclick = function () {
+        groupModal.style.display = "none";
+    }
+
+    // Close the modal when the user clicks outside of it
+    window.onclick = function (event) {
+        if (event.target == groupModal) {
+            groupModal.style.display = "none";
+        }
+    }
+</script>
+</html>

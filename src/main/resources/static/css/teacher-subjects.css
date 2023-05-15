@@ -1,0 +1,57 @@
+body {
+    background-color: #f2f2f2; /* Light gray background */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: #333333; /* Dark gray heading color */
+}
+
+h2, h3 {
+    color: #666666; /* Medium gray heading color */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th {
+    background-color: #969494; /* Light gray table header background */
+    color: #7afc7a; /* Dark gray table header color */
+    padding: 10px;
+    text-align: left;
+    font-weight: bold;
+}
+
+table td {
+    background-color: #ffffff; /* White table cell background */
+    color: #333333; /* Dark gray table cell color */
+    padding: 10px;
+}
+
+h2 {
+    margin-top: 15px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+a {
+    color: #333333; /* Dark gray link color */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

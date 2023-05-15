@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Page</title>
+    <link rel="stylesheet" th:href="@{/css/admin-dashboard.css}"/>
+</head>
+<body>
+<h1>Admin Page</h1>
+
+<button id="open-modal-btn">Add User</button>
+
+<button id="open-subject-modal-btn">Add Subject</button>
+
+<button id="open-group-modal-btn">Add Group</button>
+
+<a th:href="@{/admin/groups}" class="hrefButton">Groups</a>
+
+<div id="create-user-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-user">&times;</span>
+        <h2>Create New User</h2>
+
+        <form th:action="@{/users/new}" th:object="${user}" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" th:field="*{username}"/><br/><br/>
+            <label for="password">Password:</label>
+            <input type="password" id="password" th:field="*{password}"/><br/><br/>
+            <label for="email">Email:</label>
+            <input type="email" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" id="email" th:field="*{email}"/><br/><br/>
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" pattern="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"
+                   id="phoneNumber" th:field="*{phoneNumber}"/><br/><br/>
+            <label for="firstName">First Name:</label>
+            <input type="text" pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$" id="firstName"
+                   th:field="*{firstName}"/><br/><br/>
+            <label for="lastName">Last Name:</label>
+            <input type="text" pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$" id="lastName"
+                   th:field="*{lastName}"/><br/><br/>
+            <label for="birthday">Birthday:</label>
+            <input type="date" id="birthday" th:field="*{birthday}"/><br/><br/>
+            <label for="role">Role:</label>
+            <select id="role" th:field="*{role}">
+                <option value="ADMIN">Admin</option>
+                <option value="TEACHER">Teacher</option>
+                <option value="STUDENT">Student</option>
+            </select><br/><br/>
+            <div id="group-field" style="display: none;">
+                <label for="selectedGroup">Group:</label>
+                <select id="selectedGroup" th:field="*{student.group.id}">
+                    <option th:each="group : ${groups}" th:value="${group.id}" th:text="${group.groupName}"></option>
+                </select><br/><br/>
+            </div>
+            <input type="submit" value="Create"/>
+        </form>
+    </div>
+</div>
+
+
+<div id="create-subject-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-subject">&times;</span>
+        <h2>Create Subject</h2>
+
+        <form th:action="@{/admin/subjects}" th:object="${subject}" method="post">
+            <label for="subjectName">Subject Name:</label>
+            <input type="text" id="subjectName" th:field="*{subjectName}" required/><br/>
+
+            <label for="group">Group:</label>
+            <select id="group" th:field="*{group}" required>
+                <option th:each="group : ${groups}" th:value="${group.id}" th:text="${group.groupName}"></option>
+            </select><br/>
+
+            <label for="teachers">Teachers:</label>
+            <select id="teachers" th:field="*{teachers}" required multiple>
+                <option th:each="teacher : ${teachers}" th:value="${teacher.id}"
+                        th:text="${teacher.user.firstName + ' ' + teacher.user.lastName}"></option>
+            </select><br/>
+
+            <!-- Add other fields or input elements as needed -->
+
+            <button type="submit">Create</button>
+        </form>
+    </div>
+</div>
+
+<div id="create-group-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-group">&times;</span>
+        <h2>Create Subject</h2>
+
+        <form th:action="@{/admin/groups}" th:object="${newGroup}" method="post">
+            <label for="groupName">Group Name:</label>
+            <input type="text" id="groupName" th:field="*{groupName}" required/><br/>
+
+            <!-- Add other fields or input elements as needed -->
+
+            <button type="submit">Create</button>
+        </form>
+    </div>
+</div>
+
+<h1>All Users</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Birthday</th>
+        <th>Date of Creation</th>
+        <th>Role</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.phoneNumber}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.birthday}"></td>
+        <td th:text="${user.dateOfCreation}"></td>
+        <td th:text="${user.role}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+
+    var roleSelect = document.getElementById("role");
+    var groupField = document.getElementById("group-field");
+    roleSelect.addEventListener("change", function () {
+        var selectedRole = roleSelect.value;
+        if (selectedRole === "STUDENT") {
+            groupField.style.display = "block";
+        } else {
+            groupField.style.display = "none";
+        }
+    });
+
+    <!--            User modal            -->
+    // Get the modal element
+    var modal = document.getElementById("create-user-modal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("open-modal-btn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close-user")[0];
+
+    // Open the modal when the button is clicked
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // Close the modal when the <span> (x) is clicked
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // Close the modal when the user clicks outside of it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+<!--            Subject modal            -->
+    var subjectModal = document.getElementById("create-subject-modal");
+
+    // Get the button that opens the modal
+    var subjectBtn = document.getElementById("open-subject-modal-btn");
+
+    // Get the <span> element that closes the modal
+    var subjectSpan = document.getElementsByClassName("close-subject")[0];
+
+    // Open the modal when the button is clicked
+    subjectBtn.onclick = function () {
+        subjectModal.style.display = "block";
+    }
+
+    // Close the modal when the <span> (x) is clicked
+    subjectSpan.onclick = function () {
+        subjectModal.style.display = "none";
+    }
+
+    // Close the modal when the user clicks outside of it
+    window.onclick = function (event) {
+        if (event.target == subjectModal) {
+            subjectModal.style.display = "none";
+        }
+    }
+
+
+    <!--            Group modal            -->
+    var groupModal = document.getElementById("create-group-modal");
+
+    // Get the button that opens the modal
+    var groupBtn = document.getElementById("open-group-modal-btn");
+
+    // Get the <span> element that closes the modal
+    var groupSpan = document.getElementsByClassName("close-group")[0];
+
+    // Open the modal when the button is clicked
+    groupBtn.onclick = function () {
+        groupModal.style.display = "block";
+    }
+
+    // Close the modal when the <span> (x) is clicked
+    groupSpan.onclick = function () {
+        groupModal.style.display = "none";
+    }
+
+    // Close the modal when the user clicks outside of it
+    window.onclick = function (event) {
+        if (event.target == groupModal) {
+            groupModal.style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>

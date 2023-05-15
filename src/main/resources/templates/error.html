@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        p {
+            font-size: 16px;
+            margin-bottom: 30px;
+            color: #777777;
+        }
+
+        ul {
+            text-align: left;
+            list-style-type: disc;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Error</h1>
+    <p th:text="${errorMessage}"></p>
+
+    <h2>Suggestions:</h2>
+    <ul>
+        <li th:each="suggestion : ${errorSuggestions}" th:text="${suggestion}"></li>
+    </ul>
+</div>
+</body>
+</html>

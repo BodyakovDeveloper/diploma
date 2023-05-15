@@ -1,6 +1,6 @@
 package com.koval.diploma.payload.response;
 
-import com.koval.diploma.entity.Student;
+import com.koval.diploma.model.Student;
 
 import java.util.List;
 

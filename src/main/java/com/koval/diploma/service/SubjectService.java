@@ -1,19 +1,17 @@
 package com.koval.diploma.service;
 
-import com.koval.diploma.entity.Subject;
-import com.koval.diploma.repository.SubjectRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.koval.diploma.model.Subject;
+import com.koval.diploma.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
-@Service
-@RequiredArgsConstructor
-public class SubjectService {
+public interface SubjectService {
 
-    private final SubjectRepository subjectRepository;
+    List<Subject> getSubjectsForTeacher(User teacher);
 
-    public List<Subject> getSubjects() {
-        return subjectRepository.
-    }
+    List<Subject> getSubjectsForTeacherByGroup(User user, Long groupId);
+
+    Subject getSubjectById(Long subjectId);
+
 }

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>My Subjects</title>
+</head>
+<body>
+<h1>My Subjects</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Teacher</th>
+    <th>Lessons</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="subject : ${subjects}">
+    <td th:text="${subject.name}"></td>
+    <td th:text="${subject.teacher.fullName}"></td>
+    <td>
+      <a th:href="@{/student/subject/lessons(subjectId=${subject.id})}">View Lessons</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

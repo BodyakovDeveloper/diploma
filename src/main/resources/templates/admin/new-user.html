@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New User</title>
+    <link rel="stylesheet" th:href="@{/css/new-user.css}">
+</head>
+<body>
+<h1>New User</h1>
+
+<form th:action="@{/users/new}" th:object="${user}" method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" th:field="*{username}"/><br/><br/>
+    <label for="password">Password:</label>
+    <input type="password" id="password" th:field="*{password}"/><br/><br/>
+    <label for="email">Email:</label>
+    <input type="email" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" id="email" th:field="*{email}"/><br/><br/>
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="text" pattern="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"
+           id="phoneNumber" th:field="*{phoneNumber}"/><br/><br/>
+    <label for="firstName">First Name:</label>
+    <input type="text" pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$" id="firstName"
+           th:field="*{firstName}"/><br/><br/>
+    <label for="lastName">Last Name:</label>
+    <input type="text" pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$" id="lastName"
+           th:field="*{lastName}"/><br/><br/>
+    <label for="birthday">Birthday:</label>
+    <input type="date" id="birthday" th:field="*{birthday}"/><br/><br/>
+    <label for="role">Role:</label>
+    <select id="role" th:field="*{role}">
+        <option value="ADMIN">Admin</option>
+        <option value="TEACHER">Teacher</option>
+        <option value="STUDENT">Student</option>
+    </select><br/><br/>
+    <input type="submit" value="Create"/>
+</form>
+
+
+</body>
+</html>

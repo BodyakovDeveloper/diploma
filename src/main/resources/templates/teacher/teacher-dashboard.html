@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/teacher-dashboard.css}"/>
+</head>
+<body>
+<h1>Welcome, th:text="${user.name}" </h1>
+
+<h2>Groups:</h2>
+<ul>
+    <li th:each="group : ${groups}">
+        <a th:href="@{'/teacher/groups/' + ${group.id} + '/subjects'}"><span th:text="${group.groupName}"></span></a>
+    </li>
+</ul>
+</body>
+</html>
