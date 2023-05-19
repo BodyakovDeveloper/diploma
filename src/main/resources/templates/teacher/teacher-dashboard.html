@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Teacher Dashboard</title>
-    <link rel="stylesheet" th:href="@{/css/teacher-dashboard.css}"/>
+    <link rel="stylesheet" href="/css/teacher/teacher-dashboard.css"/>
 </head>
 <body>
-<h1>Welcome, th:text="${user.name}" </h1>
+<h1>Welcome, <span th:text="${user.firstName}"/> </h1>
 
 <h2>Groups:</h2>
 <ul>
@@ -15,4 +15,5 @@
     </li>
 </ul>
 </body>
-</html>
+</html
+>

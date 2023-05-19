@@ -1,4 +1,4 @@
-package com.koval.diploma.mvccontroller;
+package com.koval.diploma.controller;
 
 import com.koval.diploma.model.User;
 import com.koval.diploma.service.UserService;

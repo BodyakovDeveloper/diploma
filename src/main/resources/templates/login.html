@@ -3,20 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Login Page</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}" />
+    <link rel="stylesheet" href="/css/login.css"/>
 </head>
 <body>
-<h1>Login Page</h1>
-<form th:action="@{/login}" method="post">
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username">
+<div class="parent clearfix">
+    <div class="bg-illustration">
+
+        <div class="burger-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
     </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password">
+
+    <div class="login">
+        <div class="container">
+            <h1 id="login-to-access">Login to access to your account</h1>
+
+            <div class="login-form">
+                <form th:action="@{/login}" method="post">
+                    <input type="text" id="username" name="username" placeholder="Username">
+                    <input type="password" id="password" name="password" placeholder="Password">
+
+                    <button type="submit">LOG-IN</button>
+                </form>
+            </div>
+
+        </div>
     </div>
-    <button type="submit">Log In</button>
-</form>
+</div>
 </body>
 </html>

@@ -14,4 +14,5 @@ public interface SubjectService {
 
     Subject getSubjectById(Long subjectId);
 
+    Subject save(Subject subject);
 }

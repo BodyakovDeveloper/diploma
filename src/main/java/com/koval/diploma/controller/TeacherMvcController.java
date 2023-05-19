@@ -1,6 +1,5 @@
-package com.koval.diploma.mvccontroller;
+package com.koval.diploma.controller;
 
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.koval.diploma.model.ClassType;
 import com.koval.diploma.model.Group;
 import com.koval.diploma.model.Lesson;
@@ -13,7 +12,6 @@ import com.koval.diploma.service.LessonService;
 import com.koval.diploma.service.StudentService;
 import com.koval.diploma.service.SubjectService;
 import com.koval.diploma.service.UserService;
-import com.koval.diploma.service.impl.ClassTypeServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,9 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static java.util.Comparator.comparing;
 import static java.util.stream.IntStream.rangeClosed;

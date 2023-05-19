@@ -39,4 +39,14 @@ public class GroupServiceImpl implements GroupService {
         return groupRepository.findById(groupId)
                 .orElseThrow(() -> new GroupNotFoundException("Group with id: " + groupId + " not found"));
     }
+
+    @Override
+    public Group save(Group group) {
+        return groupRepository.save(group);
+    }
+
+    @Override
+    public List<Group> getAll() {
+        return groupRepository.findAll();
+    }
 }

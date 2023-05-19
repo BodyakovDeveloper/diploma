@@ -39,4 +39,9 @@ public class SubjectServiceImpl implements SubjectService {
         return subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new SubjectNotFoundException("Subject with id:" + subjectId + " not found"));
     }
+
+    @Override
+    public Subject save(Subject subject) {
+        return subjectRepository.save(subject);
+    }
 }

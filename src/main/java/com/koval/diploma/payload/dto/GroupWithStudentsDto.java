@@ -2,13 +2,13 @@ package com.koval.diploma.payload.dto;
 
 import java.util.List;
 
-public class GroupWithStudents {
+public class GroupWithStudentsDto {
     private Long id;
     private String groupName;
     private List<String> studentNames;
 
     // Constructor
-    public GroupWithStudents(Long id, String groupName, List<String> studentNames) {
+    public GroupWithStudentsDto(Long id, String groupName, List<String> studentNames) {
         this.id = id;
         this.groupName = groupName;
         this.studentNames = studentNames;

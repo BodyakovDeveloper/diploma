@@ -1,4 +1,4 @@
-package com.koval.diploma.mvccontroller;
+package com.koval.diploma.controller;
 // Import necessary dependencies
 
 import com.koval.diploma.model.Lesson;

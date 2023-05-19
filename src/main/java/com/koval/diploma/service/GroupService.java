@@ -12,4 +12,8 @@ public interface GroupService {
     List<Group> getGroupsForTeacher(String currentPrincipalName);
 
     Group getGroupById(Long groupId);
+
+    Group save(Group group);
+
+    List<Group> getAll();
 }

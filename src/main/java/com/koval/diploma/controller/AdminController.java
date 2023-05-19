@@ -1,17 +1,16 @@
-package com.koval.diploma.mvccontroller;
+package com.koval.diploma.controller;
 
 import com.koval.diploma.model.Group;
 import com.koval.diploma.model.Student;
 import com.koval.diploma.model.Subject;
 import com.koval.diploma.model.Teacher;
 import com.koval.diploma.model.User;
-import com.koval.diploma.repository.GroupRepository;
-import com.koval.diploma.repository.SubjectRepository;
-import com.koval.diploma.repository.TeacherRepository;
+import com.koval.diploma.service.ControllerService;
+import com.koval.diploma.service.GroupService;
+import com.koval.diploma.service.SubjectService;
+import com.koval.diploma.service.TeacherService;
 import com.koval.diploma.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,32 +26,30 @@ import java.util.List;
 public class AdminController {
 
     private final UserService userService;
-    private final TeacherRepository teacherRepository;
-    private final SubjectRepository subjectRepository;
-    private final GroupRepository groupRepository;
+    private final TeacherService teacherService;
+    private final SubjectService subjectService;
+    private final GroupService groupService;
+    private final ControllerService controllerService;
 
     @GetMapping("/dashboard")
     public String getAdminDashboard(Model model) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        String currentPrincipalName = authentication.getName();
-        User admin = userService.getByUsername(currentPrincipalName);
+        User currentUser = controllerService.getCurrentUser();
         User user = new User();
         user.setStudent(new Student());
 
-        model.addAttribute("admin", admin);
+        model.addAttribute("admin", currentUser);
         model.addAttribute("user", user);
         model.addAttribute("subject", new Subject());
 
         List<User> users = userService.getAll();
         model.addAttribute("users", users);
 
-        List<Teacher> teachers = teacherRepository.findAll();
+        List<Teacher> teachers = teacherService.getTeachers();
         model.addAttribute("teachers", teachers);
         Group selectedGroup = new Group();
         model.addAttribute("selectedGroup", selectedGroup);
-        List<Group> groups = groupRepository.findAll();
+        List<Group> groups = groupService.getAll();
         model.addAttribute("groups", groups);
         model.addAttribute("newGroup", new Group());
 
@@ -61,26 +58,33 @@ public class AdminController {
 
     @GetMapping("/groups")
     public String createGroup(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        String currentPrincipalName = authentication.getName();
-        User user = userService.getByUsername(currentPrincipalName);
+        User user = controllerService.getCurrentUser();
 
         model.addAttribute("admin", user);
-        model.addAttribute("groups", groupRepository.findAll());
+        model.addAttribute("groups", groupService.getAll());
         model.addAttribute("newGroup", new Group());
         return "admin/groups";
     }
 
+    @GetMapping("/teachers")
+    public String getTeachers(Model model) {
+        User user = controllerService.getCurrentUser();
+        model.addAttribute("admin", user);
+
+        model.addAttribute("teachers", teacherService.getTeachers());
+        model.addAttribute("newTeacher", new Teacher());
+        return "admin/teachers";
+    }
+
     @PostMapping("/groups")
     public String createGroup(@ModelAttribute("newGroup") Group group) {
-        groupRepository.save(group);
+        groupService.save(group);
         return "redirect:/admin/groups";
     }
 
     @PostMapping("/subjects")
     public String createSubject(@ModelAttribute("newSubject") Subject subject) {
-        subjectRepository.save(subject);
+        subjectService.save(subject);
         return "redirect:/admin/dashboard";
     }
 }

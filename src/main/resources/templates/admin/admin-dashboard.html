@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin Page</title>
-    <link rel="stylesheet" th:href="@{/css/admin-dashboard.css}"/>
+    <link rel="stylesheet" th:href="@{/css/admin/admin-dashboard.css}"/>
 </head>
 <body>
 <h1>Admin Page</h1>
@@ -76,8 +76,6 @@
                 <option th:each="teacher : ${teachers}" th:value="${teacher.id}"
                         th:text="${teacher.user.firstName + ' ' + teacher.user.lastName}"></option>
             </select><br/>
-
-            <!-- Add other fields or input elements as needed -->
 
             <button type="submit">Create</button>
         </form>
@@ -169,7 +167,7 @@
             modal.style.display = "none";
         }
     }
-<!--            Subject modal            -->
+    <!--            Subject modal            -->
     var subjectModal = document.getElementById("create-subject-modal");
 
     // Get the button that opens the modal
