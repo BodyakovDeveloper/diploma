@@ -7,7 +7,6 @@ import com.koval.diploma.model.Teacher;
 import com.koval.diploma.model.User;
 import com.koval.diploma.repository.SubjectRepository;
 import com.koval.diploma.repository.TeacherRepository;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,7 +59,7 @@ public class SubjectServiceImplTest {
                 );
 
         // Invoke the method
-        List<Subject> subjects = subjectService.getSubjectsForTeacher(user);
+        List<Subject> subjects = subjectService.getForTeacher(user);
 
         // Verify interactions and assertions
         verify(teacherRepository).findByUserUsername(user.getUsername());
@@ -80,7 +79,7 @@ public class SubjectServiceImplTest {
         when(subjectRepository.findAllByTeacherAndGroup(teacher.getId(), groupId)).thenReturn(Arrays.asList(new Subject(), new Subject()));
 
         // Invoke the method
-        List<Subject> subjects = subjectService.getSubjectsForTeacherByGroup(user, groupId);
+        List<Subject> subjects = subjectService.getForTeacherByGroup(user, groupId);
 
         // Verify interactions and assertions
         verify(teacherRepository).findByUserUsername(user.getUsername());
@@ -97,7 +96,7 @@ public class SubjectServiceImplTest {
         when(subjectRepository.findById(subjectId)).thenReturn(Optional.of(subject));
 
         // Invoke the method
-        Subject result = subjectService.getSubjectById(subjectId);
+        Subject result = subjectService.getById(subjectId);
 
         // Verify interactions and assertions
         verify(subjectRepository).findById(subjectId);
@@ -112,7 +111,7 @@ public class SubjectServiceImplTest {
         when(subjectRepository.findById(subjectId)).thenReturn(Optional.empty());
 
         // Invoke and verify the exception
-        assertThrows(SubjectNotFoundException.class, () -> subjectService.getSubjectById(subjectId));
+        assertThrows(SubjectNotFoundException.class, () -> subjectService.getById(subjectId));
         verify(subjectRepository).findById(subjectId);
     }
 }

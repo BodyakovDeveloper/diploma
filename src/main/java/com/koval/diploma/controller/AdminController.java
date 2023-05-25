@@ -1,22 +1,13 @@
 package com.koval.diploma.controller;
 
-import com.koval.diploma.model.Group;
-import com.koval.diploma.model.Student;
-import com.koval.diploma.model.Subject;
-import com.koval.diploma.model.Teacher;
-import com.koval.diploma.model.User;
-import com.koval.diploma.service.ControllerService;
-import com.koval.diploma.service.GroupService;
-import com.koval.diploma.service.SubjectService;
-import com.koval.diploma.service.TeacherService;
-import com.koval.diploma.service.UserService;
+import com.koval.diploma.model.*;
+import com.koval.diploma.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -29,7 +20,9 @@ public class AdminController {
     private final TeacherService teacherService;
     private final SubjectService subjectService;
     private final GroupService groupService;
+    private final StudentService studentService;
     private final ControllerService controllerService;
+    private final CathedraService cathedraService;
 
     @GetMapping("/dashboard")
     public String getAdminDashboard(Model model) {
@@ -45,7 +38,10 @@ public class AdminController {
         List<User> users = userService.getAll();
         model.addAttribute("users", users);
 
-        List<Teacher> teachers = teacherService.getTeachers();
+        List<Cathedra> cathedras = cathedraService.getAll();
+        model.addAttribute("cathedras", cathedras);
+
+        List<Teacher> teachers = teacherService.getAll();
         model.addAttribute("teachers", teachers);
         Group selectedGroup = new Group();
         model.addAttribute("selectedGroup", selectedGroup);
@@ -58,26 +54,49 @@ public class AdminController {
 
     @GetMapping("/groups")
     public String createGroup(Model model) {
-        User user = controllerService.getCurrentUser();
+        User admin = controllerService.getCurrentUser();
 
-        model.addAttribute("admin", user);
         model.addAttribute("groups", groupService.getAll());
         model.addAttribute("newGroup", new Group());
+        model.addAttribute("admin", admin);
         return "admin/groups";
     }
 
     @GetMapping("/teachers")
-    public String getTeachers(Model model) {
-        User user = controllerService.getCurrentUser();
-        model.addAttribute("admin", user);
+    public String getTeachers(@RequestParam("cathedraId") Long cathedraId, Model model) {
+        User admin = controllerService.getCurrentUser();
+        Cathedra currentCathedra = cathedraService
+                .getById(cathedraId == null
+                        ? Long.valueOf(model.getAttribute("cathedraId").toString())
+                        : cathedraId);
 
-        model.addAttribute("teachers", teacherService.getTeachers());
-        model.addAttribute("newTeacher", new Teacher());
+        model.addAttribute("admin", admin);
+        model.addAttribute("currentCathedra", currentCathedra);
+        model.addAttribute("teachers", teacherService.getByCathedra(cathedraId));
+        model.addAttribute("newTeacher", new User());
         return "admin/teachers";
     }
 
+    @GetMapping("/students")
+    public String getStudents(@RequestParam("groupId") Long groupId, Model model) {
+        List<Student> students = studentService.getStudentsByGroup(groupId);
+        Group currentGroup = groupService
+                .getById(groupId == null
+                        ? Long.valueOf(model.getAttribute("groupId").toString())
+                        : groupId);
+        User admin = controllerService.getCurrentUser();
+
+        model.addAttribute("admin", admin);
+        model.addAttribute("students", students);
+        model.addAttribute("newStudent", new User());
+        model.addAttribute("groups", groupService.getAll());
+        model.addAttribute("group", currentGroup);
+        return "admin/students";
+    }
+
     @PostMapping("/groups")
-    public String createGroup(@ModelAttribute("newGroup") Group group) {
+    public String createGroup(@RequestParam("cathedraId") Long cathedraId, @ModelAttribute("newGroup") Group group) {
+        group.setCathedra(cathedraService.getById(cathedraId));
         groupService.save(group);
         return "redirect:/admin/groups";
     }
@@ -86,5 +105,13 @@ public class AdminController {
     public String createSubject(@ModelAttribute("newSubject") Subject subject) {
         subjectService.save(subject);
         return "redirect:/admin/dashboard";
+    }
+
+    @PostMapping("/groups/edit")
+    public ModelAndView submitForm(@ModelAttribute("entity") Group group, ModelMap model) {
+        groupService.update(group);
+        model.addAttribute("groupId", group.getId());
+
+        return new ModelAndView("redirect:/admin/students", model);
     }
 }

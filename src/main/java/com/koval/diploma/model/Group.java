@@ -1,14 +1,6 @@
 package com.koval.diploma.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,6 +26,12 @@ public class Group {
     @Column(name = "group_name", nullable = false, length = 32)
     private String groupName;
 
+    @Column(name = "email", length = 32)
+    private String email;
+
+    @OneToOne
+    private Student headOfGroup;
+
     @OneToMany(mappedBy = "group")
     private List<Student> students = new ArrayList<>();
 
@@ -42,4 +40,7 @@ public class Group {
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<Subject> subjects = new ArrayList<>();
+
+    @ManyToOne
+    private Cathedra cathedra;
 }

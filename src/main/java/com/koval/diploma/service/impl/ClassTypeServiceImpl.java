@@ -15,7 +15,7 @@ public class ClassTypeServiceImpl implements ClassTypeService {
     private final ClassTypeRepository classTypeRepository;
 
     @Override
-    public List<ClassType> getAllClassTypes() {
+    public List<ClassType> getAll() {
         return classTypeRepository.findAll();
     }
 }

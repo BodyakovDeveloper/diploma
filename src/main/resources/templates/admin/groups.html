@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/css/groups.css}"/>
+    <link rel="stylesheet" th:href="@{/css/admin/teachers.css}"/>
 </head>
 <body>
 
 <a th:href="@{/admin/dashboard}" class="button">Dashboard</a>
 
-<button id="open-group-modal-btn">Add Group</button>
+<button id="open-group-modal-btn">Створити групу</button>
 
 <div id="create-group-modal" class="modal">
     <div class="modal-content">
         <span class="close-group">&times;</span>
-        <h2>Create Subject</h2>
+        <h2>Створити групу</h2>
 
         <form th:action="@{/admin/groups}" th:object="${newGroup}" method="post">
-            <label for="groupName">Group Name:</label>
+            <label for="groupName">Назва групи:</label>
             <input type="text" id="groupName" th:field="*{groupName}" required/><br/>
 
             <!-- Add other fields or input elements as needed -->
 
-            <button type="submit">Create</button>
+            <button type="submit">Створити</button>
         </form>
     </div>
 </div>

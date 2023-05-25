@@ -1,224 +1,138 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="uk">
 <head>
     <meta charset="UTF-8">
     <title>Admin Page</title>
     <link rel="stylesheet" th:href="@{/css/admin/admin-dashboard.css}"/>
 </head>
 <body>
-<h1>Admin Page</h1>
 
-<button id="open-modal-btn">Add User</button>
+<button id="open-students-modal-btn">Студенти</button>
+<button id="open-teachers-modal-btn">Викладачі</button>
 
-<button id="open-subject-modal-btn">Add Subject</button>
+<a th:href="@{/admin/groups}" class="hrefButton">Групи</a>
+<a th:href="@{/admin/groups}" class="hrefButton">Предмети</a>
+<a th:href="@{/admin/groups}" class="hrefButton">Створити кафедру</a>
+<a style="margin-right: 90px; font-size: xx-large; background-color: transparent; color: #c49843; float: right;
+  padding: 0;
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 0;">⚙︎</a>
+<a href="/logout" class="logout-button">Вийти</a>
 
-<button id="open-group-modal-btn">Add Group</button>
-
-<a th:href="@{/admin/groups}" class="hrefButton">Groups</a>
-
-<div id="create-user-modal" class="modal">
+<div id="get-students-by-group" class="modal">
     <div class="modal-content">
-        <span class="close-user">&times;</span>
-        <h2>Create New User</h2>
+        <span class="close-students">&times;</span>
+        <h2>Оберіть групу</h2>
 
-        <form th:action="@{/users/new}" th:object="${user}" method="post">
-            <label for="username">Username:</label>
-            <input type="text" id="username" th:field="*{username}"/><br/><br/>
-            <label for="password">Password:</label>
-            <input type="password" id="password" th:field="*{password}"/><br/><br/>
-            <label for="email">Email:</label>
-            <input type="email" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" id="email" th:field="*{email}"/><br/><br/>
-            <label for="phoneNumber">Phone Number:</label>
-            <input type="text" pattern="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"
-                   id="phoneNumber" th:field="*{phoneNumber}"/><br/><br/>
-            <label for="firstName">First Name:</label>
-            <input type="text" pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$" id="firstName"
-                   th:field="*{firstName}"/><br/><br/>
-            <label for="lastName">Last Name:</label>
-            <input type="text" pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$" id="lastName"
-                   th:field="*{lastName}"/><br/><br/>
-            <label for="birthday">Birthday:</label>
-            <input type="date" id="birthday" th:field="*{birthday}"/><br/><br/>
-            <label for="role">Role:</label>
-            <select id="role" th:field="*{role}">
-                <option value="ADMIN">Admin</option>
-                <option value="TEACHER">Teacher</option>
-                <option value="STUDENT">Student</option>
-            </select><br/><br/>
-            <div id="group-field" style="display: none;">
-                <label for="selectedGroup">Group:</label>
-                <select id="selectedGroup" th:field="*{student.group.id}">
-                    <option th:each="group : ${groups}" th:value="${group.id}" th:text="${group.groupName}"></option>
-                </select><br/><br/>
-            </div>
-            <input type="submit" value="Create"/>
-        </form>
-    </div>
-</div>
-
-
-<div id="create-subject-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-subject">&times;</span>
-        <h2>Create Subject</h2>
-
-        <form th:action="@{/admin/subjects}" th:object="${subject}" method="post">
-            <label for="subjectName">Subject Name:</label>
-            <input type="text" id="subjectName" th:field="*{subjectName}" required/><br/>
-
-            <label for="group">Group:</label>
-            <select id="group" th:field="*{group}" required>
+        <form th:action="@{/admin/students}" method="get">
+            <label for="group">Група:</label>
+            <select id="group" name="groupId">
                 <option th:each="group : ${groups}" th:value="${group.id}" th:text="${group.groupName}"></option>
-            </select><br/>
-
-            <label for="teachers">Teachers:</label>
-            <select id="teachers" th:field="*{teachers}" required multiple>
-                <option th:each="teacher : ${teachers}" th:value="${teacher.id}"
-                        th:text="${teacher.user.firstName + ' ' + teacher.user.lastName}"></option>
-            </select><br/>
-
-            <button type="submit">Create</button>
+            </select>
+            <br><br>
+            <button type="submit">Показати</button>
         </form>
     </div>
 </div>
 
-<div id="create-group-modal" class="modal">
+<div id="get-teachers-by-cathedra" class="modal">
     <div class="modal-content">
-        <span class="close-group">&times;</span>
-        <h2>Create Subject</h2>
+        <span class="close-teachers">&times;</span>
+        <h2>Оберіть Кафедру</h2>
 
-        <form th:action="@{/admin/groups}" th:object="${newGroup}" method="post">
-            <label for="groupName">Group Name:</label>
-            <input type="text" id="groupName" th:field="*{groupName}" required/><br/>
-
-            <!-- Add other fields or input elements as needed -->
-
-            <button type="submit">Create</button>
+        <form th:action="@{/admin/teachers}" method="get">
+            <label for="cathedra">Кафедра:</label>
+            <select id="cathedra" name="cathedraId">
+                <option th:each="cathedra : ${cathedras}" th:value="${cathedra.id}" th:text="${cathedra.name}"></option>
+            </select>
+            <br>
+            <br>
+            <button type="submit">Показати</button>
         </form>
     </div>
 </div>
 
-<h1>All Users</h1>
+<h1>Кафедри</h1>
 <table>
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Phone Number</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Birthday</th>
-        <th>Date of Creation</th>
-        <th>Role</th>
+        <th>№</th>
+        <th>Назва</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.id}"></td>
-        <td th:text="${user.username}"></td>
-        <td th:text="${user.email}"></td>
-        <td th:text="${user.phoneNumber}"></td>
-        <td th:text="${user.firstName}"></td>
-        <td th:text="${user.lastName}"></td>
-        <td th:text="${user.birthday}"></td>
-        <td th:text="${user.dateOfCreation}"></td>
-        <td th:text="${user.role}"></td>
+    <tr th:each="cathedra : ${cathedras}">
+        <td><span th:text="${cathedras.indexOf(cathedra) + 1}"></span></td>
+        <td>
+            <span style="font-size: large" th:text="${cathedra.name}"></span>
+        </td>
+        <td> <button class="delete-button" onclick="deleteCathedra(${cathedra.id})">Видалити</button>
+            <button class="edit-button" onclick="editCathedra(${cathedra.id})">Редагувати</button></td>
     </tr>
     </tbody>
 </table>
 
 <script>
-
-    var roleSelect = document.getElementById("role");
-    var groupField = document.getElementById("group-field");
-    roleSelect.addEventListener("change", function () {
-        var selectedRole = roleSelect.value;
-        if (selectedRole === "STUDENT") {
-            groupField.style.display = "block";
-        } else {
-            groupField.style.display = "none";
-        }
-    });
-
-    <!--            User modal            -->
     // Get the modal element
-    var modal = document.getElementById("create-user-modal");
-
+    var modal = document.getElementById("get-students-by-group");
     // Get the button that opens the modal
-    var btn = document.getElementById("open-modal-btn");
-
+    var button = document.getElementById("open-students-modal-btn");
     // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close-user")[0];
+    var closeBtn = document.querySelector(".close-students");
 
-    // Open the modal when the button is clicked
-    btn.onclick = function () {
+    // Function to open the modal
+    function openModal() {
         modal.style.display = "block";
     }
 
-    // Close the modal when the <span> (x) is clicked
-    span.onclick = function () {
+    // Function to close the modal
+    function closeModal() {
         modal.style.display = "none";
     }
 
-    // Close the modal when the user clicks outside of it
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-    <!--            Subject modal            -->
-    var subjectModal = document.getElementById("create-subject-modal");
+    // Event listener for the button click
+    button.addEventListener("click", openModal);
+    // Event listener for the close button click
+    closeBtn.addEventListener("click", closeModal);
 
+    // Teachers Modal
+    var teachersModal = document.getElementById("get-teachers-by-cathedra");
     // Get the button that opens the modal
-    var subjectBtn = document.getElementById("open-subject-modal-btn");
-
+    var teachersBtn = document.getElementById("open-teachers-modal-btn");
     // Get the <span> element that closes the modal
-    var subjectSpan = document.getElementsByClassName("close-subject")[0];
-
+    var teachersSpan = document.querySelector(".close-teachers");
     // Open the modal when the button is clicked
-    subjectBtn.onclick = function () {
-        subjectModal.style.display = "block";
+    teachersBtn.onclick = function () {
+        teachersModal.style.display = "block";
     }
-
     // Close the modal when the <span> (x) is clicked
-    subjectSpan.onclick = function () {
-        subjectModal.style.display = "none";
+    teachersSpan.onclick = function () {
+        teachersModal.style.display = "none";
     }
-
     // Close the modal when the user clicks outside of it
     window.onclick = function (event) {
-        if (event.target == subjectModal) {
-            subjectModal.style.display = "none";
+        if (event.target == teachersModal) {
+            teachersModal.style.display = "none";
         }
     }
 
 
-    <!--            Group modal            -->
-    var groupModal = document.getElementById("create-group-modal");
-
-    // Get the button that opens the modal
-    var groupBtn = document.getElementById("open-group-modal-btn");
-
-    // Get the <span> element that closes the modal
-    var groupSpan = document.getElementsByClassName("close-group")[0];
-
-    // Open the modal when the button is clicked
-    groupBtn.onclick = function () {
-        groupModal.style.display = "block";
+    function editCathedra(cathedraId) {
+        // Handle the edit action for the cathedra with the specified ID
+        // You can perform an AJAX request or navigate to a new page for editing
+        console.log("Edit cathedra with ID: " + cathedraId);
     }
 
-    // Close the modal when the <span> (x) is clicked
-    groupSpan.onclick = function () {
-        groupModal.style.display = "none";
+    function deleteCathedra(cathedraId) {
+        // Handle the delete action for the cathedra with the specified ID
+        // You can display a confirmation dialog and perform an AJAX request to delete the cathedra
+        console.log("Delete cathedra with ID: " + cathedraId);
     }
 
-    // Close the modal when the user clicks outside of it
-    window.onclick = function (event) {
-        if (event.target == groupModal) {
-            groupModal.style.display = "none";
-        }
-    }
 </script>
 </body>
 </html>

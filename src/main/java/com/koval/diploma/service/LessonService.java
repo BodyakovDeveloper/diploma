@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface LessonService {
 
-    Lesson createLesson(Lesson lesson);
+    Lesson save(Lesson lesson);
 
-    List<Lesson> getLessonsForTeacher(Long teacherId);
+    List<Lesson> getForTeacher(Long teacherId);
 
-    List<Lesson> getLessonsForTeacherByGroupAndSubject(Long groupId, Long subjectId);
+    List<Lesson> getForTeacherByGroupAndSubject(Long groupId, Long subjectId);
 }

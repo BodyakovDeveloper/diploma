@@ -21,7 +21,7 @@ table {
 
 table th {
     background-color: #969494; /* Light gray table header background */
-    color: #7afc7a; /* Dark gray table header color */
+    color: #f9b2af; /* Dark gray table header color */
     padding: 10px;
     text-align: left;
     font-weight: bold;
@@ -47,11 +47,18 @@ li {
     margin-bottom: 10px;
 }
 
+.header a {
+    padding: 10px 20px;
+    text-decoration: none;
+    background-color: #f9b2af;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    font-size: medium;
+    border-radius: 70px;
+}
+
 a {
     color: #333333; /* Dark gray link color */
     text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
 }

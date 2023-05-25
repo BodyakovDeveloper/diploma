@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/admin/teachers.css"/>
+</head>
+<body>
+
+<a th:href="@{/admin/dashboard}" class="button">Dashboard</a>
+
+<button id="open-student-modal-btn">Створити нового студента</button>
+<button id="edit-info-btn">Редагувати</button>
+
+<div id="create-student-modal" class="modal">
+    <div class="modal-content">
+        <span class="student">&times;</span>
+        <h2>Створити нового студента</h2>
+
+        <form th:action="@{/students/new}" th:object="${newStudent}" method="post">
+            <label for="username">Логін:</label>
+            <input type="text" id="username" th:field="*{username}"/><br/><br/>
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" th:field="*{password}"/><br/><br/>
+            <label for="email">Email:</label>
+            <input type="email" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" id="email" th:field="*{email}"/><br/><br/>
+            <label for="phoneNumber">Номер телефону:</label>
+            <input type="text" pattern="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"
+                   id="phoneNumber" th:field="*{phoneNumber}"/><br/><br/>
+            <label for="firstName">Ім'я:</label>
+            <input type="text" pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$" id="firstName"
+                   th:field="*{firstName}"/><br/><br/>
+            <label for="lastName">Прізвище:</label>
+            <input type="text" pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$" id="lastName"
+                   th:field="*{lastName}"/><br/><br/>
+            <label for="birthday">Дата народження:</label>
+            <input type="date" id="birthday" th:field="*{birthday}"/><br/><br/>
+            <div id="group-field">
+                <label for="selectedGroup">Група:</label>
+                <select id="selectedGroup" th:field="*{student.group.id}">
+                    <option th:each="group : ${groups}" th:value="${group.id}" th:text="${group.groupName}"></option>
+                </select><br/><br/>
+            </div>
+            </label><select id="role" th:field="*{role}" hidden="hidden">
+            <option value="STUDENT">STUDENT</option>
+        </select><br/><br/>
+            <input type="submit" value="Create"/>
+        </form>
+    </div>
+</div>
+
+
+<div id="edit-group-info-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-edit">&times;</span>
+        <h2>Редагувати</h2>
+
+        <form th:action="@{/admin/groups/edit}" th:object="${group}" method="post">
+
+            <input type="text" id="id" th:field="*{id}" hidden="hidden"/><br/>
+
+            <label for="groupName">Group Name:</label>
+            <input type="text" id="groupName" th:field="*{groupName}" required/><br/>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}"/><br/>
+
+            <label for="groupHead">Group Head:</label>
+            <select id="groupHead" required>
+                <option value="">-- Select Group Head --</option>
+                <option th:each="group : ${groups}" th:value="${group.id}" th:text="${group.groupName}"></option>
+            </select><br/>
+            <!-- Add more input fields for other properties if needed -->
+
+            <input type="submit" value="Update"/>
+        </form>
+    </div>
+</div>
+
+<h1><span th:text="${group.groupName}"></span></h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Логін</th>
+        <th>Email</th>
+        <th>Номер телефону</th>
+        <th>Ім'я</th>
+        <th>Прізвище</th>
+        <th>Дата народження</th>
+        <th>Дата створення</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="student : ${students}">
+        <td th:text="${student.user.id}"></td>
+        <td th:text="${student.user.username}"></td>
+        <td th:text="${student.user.email}"></td>
+        <td th:text="${student.user.phoneNumber}"></td>
+        <td th:text="${student.user.firstName}"></td>
+        <td th:text="${student.user.lastName}"></td>
+        <td th:text="${student.user.birthday}"></td>
+        <td th:text="${student.user.dateOfCreation}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    <!--
+    Students
+    modal          -->
+    var studentModal = document.getElementById("create-student-modal");
+    // Get the button that opens the modal
+    var studentBtn = document.getElementById("open-student-modal-btn");
+    // Get the <span> element that closes the modal
+    var studentSpan = document.getElementsByClassName("close-user")[0];
+    // Open the modal when the button is clicked
+    studentBtn.onclick = function () {
+        studentModal.style.display = "block";
+    }
+    // Close the modal when the <span> (x) is clicked
+    studentSpan.onclick = function () {
+        studentModal.style.display = "none";
+    }
+    // Close the modal when the user clicks outside of it
+    window.onclick = function (event) {
+        if (event.target == studentModal) {
+            studentModal.style.display = "none";
+        }
+    }
+
+    <!--            Edit info modal            -->
+    var groupModal = document.getElementById("edit-group-info-modal");
+    // Get the button that opens the modal
+    var groupBtn = document.getElementById("edit-info-btn");
+    // Get the <span> element that closes the modal
+    var groupSpan = document.getElementsByClassName("close-edit")[0];
+    // Open the modal when the button is clicked
+    groupBtn.onclick = function () {
+        groupModal.style.display = "block";
+    }
+    // Close the modal when the <span> (x) is clicked
+    groupSpan.onclick = function () {
+        groupModal.style.display = "none";
+    }
+    // Close the modal when the user clicks outside of it
+    window.onclick = function (event) {
+        if (event.target == groupModal) {
+            groupModal.style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>

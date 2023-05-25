@@ -3,80 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="/css/admin/teachers.css"/>
 </head>
 <body>
 
-<a th:href="@{/admin/dashboard}" class="button">Dashboard</a>
+<a th:href="@{/admin/dashboard}" class="button">Головна сторінка</a>
 
-<button id="open-group-modal-btn">Add Group</button>
+<button id="open-user-modal-btn">Створити нового викладача</button>
 
-<div id="create-group-modal" class="modal">
+<div id="create-user-modal" class="modal">
     <div class="modal-content">
-        <span class="close-group">&times;</span>
-        <h2>Create Subject</h2>
+        <span class="close-user">&times;</span>
+        <h2>Створити нового викладача</h2>
 
-        <form th:action="@{/admin/groups}" th:object="${newGroup}" method="post">
-            <label for="groupName">Group Name:</label>
-            <input type="text" id="groupName" th:field="*{groupName}" required/><br/>
-
-            <!-- Add other fields or input elements as needed -->
-
-            <button type="submit">Create</button>
+        <form th:action="@{/teachers/new}" th:object="${newTeacher}" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" th:field="*{username}"/><br/><br/>
+            <label for="password">Password:</label>
+            <input type="password" id="password" th:field="*{password}"/><br/><br/>
+            <label for="email">Email:</label>
+            <input type="email" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" id="email" th:field="*{email}"/><br/><br/>
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" pattern="^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"
+                   id="phoneNumber" th:field="*{phoneNumber}"/><br/><br/>
+            <label for="firstName">First Name:</label>
+            <input type="text" pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$" id="firstName"
+                   th:field="*{firstName}"/><br/><br/>
+            <label for="lastName">Last Name:</label>
+            <input type="text" pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$" id="lastName"
+                   th:field="*{lastName}"/><br/><br/>
+            <label for="birthday">Birthday:</label>
+            <input type="date" id="birthday" th:field="*{birthday}"/><br/><br/>
+            <select id="cathedra" name="cathedraId" style="display: none">
+                <option th:value="${currentCathedra.id}">Cathedra</option>
+            </select><br/><br/>
+            <select id="role" th:field="*{role}" hidden="hidden">
+                <option value="TEACHER">TEACHER</option>
+            </select><br/><br/>
+            <input type="submit" value="Create"/>
         </form>
     </div>
 </div>
-<h1>All groups</h1>
+
+<h1>Викладачі кафедри <span th:text="${currentCathedra.name}"></span></h1>
 <table>
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Name</th>
+        <th>N</th>
+        <th>Логін</th>
+        <th>Email</th>
+        <th>Номер телефону</th>
+        <th>Ім'я</th>
+        <th>Прізвище</th>
+        <th>Дата народження</th>
+        <th>Дата створення</th>
+        <th>Роль</th>
     </tr>
     </thead>
     <tbody>
-
-    <h1>All Users</h1>
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Birthday</th>
-            <th>Date of Creation</th>
-            <th>Role</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="user : ${users}">
-            <td th:text="${user.id}"></td>
-            <td th:text="${user.username}"></td>
-            <td th:text="${user.email}"></td>
-            <td th:text="${user.phoneNumber}"></td>
-            <td th:text="${user.firstName}"></td>
-            <td th:text="${user.lastName}"></td>
-            <td th:text="${user.birthday}"></td>
-            <td th:text="${user.dateOfCreation}"></td>
-            <td th:text="${user.role}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <tr th:each="teacher : ${teachers}">
+        <td th:text="${teacher.user.id}"></td>
+        <td th:text="${teacher.user.username}"></td>
+        <td th:text="${teacher.user.email}"></td>
+        <td th:text="${teacher.user.phoneNumber}"></td>
+        <td th:text="${teacher.user.firstName}"></td>
+        <td th:text="${teacher.user.lastName}"></td>
+        <td th:text="${teacher.user.birthday}"></td>
+        <td th:text="${teacher.user.dateOfCreation}"></td>
+        <td th:text="${teacher.user.role}"></td>
     </tr>
     </tbody>
 </table>
-<script>
 
+<script>
     <!--            Group modal            -->
-    var groupModal = document.getElementById("create-group-modal");
+    var groupModal = document.getElementById("create-user-modal");
 
     // Get the button that opens the modal
-    var groupBtn = document.getElementById("open-group-modal-btn");
+    var groupBtn = document.getElementById("open-user-modal-btn");
 
     // Get the <span> element that closes the modal
-    var groupSpan = document.getElementsByClassName("close-group")[0];
+    var groupSpan = document.getElementsByClassName("close-user")[0];
 
     // Open the modal when the button is clicked
     groupBtn.onclick = function () {

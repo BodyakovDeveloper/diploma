@@ -23,7 +23,7 @@ import java.util.List;
 
 
 @Entity
-@ToString(exclude = {"marks", "attends"})
+@ToString(exclude = {"marks", "attends", "groupHead"})
 @Table(name = "students")
 @Setter
 @Getter
@@ -39,6 +39,9 @@ public class Student {
 
     @OneToOne
     private User user;
+
+    @OneToOne(mappedBy = "headOfGroup")
+    private Group groupHead;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "group_id", foreignKey = @ForeignKey(name = "students_groups_fk"))

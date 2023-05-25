@@ -5,5 +5,5 @@ import com.koval.diploma.model.ClassType;
 import java.util.List;
 
 public interface ClassTypeService {
-    List<ClassType> getAllClassTypes();
+    List<ClassType> getAll();
 }

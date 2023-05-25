@@ -21,21 +21,21 @@ public class SubjectServiceImpl implements SubjectService {
     private final TeacherRepository teacherRepository;
 
     @Override
-    public List<Subject> getSubjectsForTeacher(User user) {
+    public List<Subject> getForTeacher(User user) {
         Teacher teacher = teacherRepository.findByUserUsername(user.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User with username: " + user.getUsername() + " not found"));
         return subjectRepository.findAllByTeacher(teacher.getId());
     }
 
     @Override
-    public List<Subject> getSubjectsForTeacherByGroup(User user, Long groupId) {
+    public List<Subject> getForTeacherByGroup(User user, Long groupId) {
         Teacher teacher = teacherRepository.findByUserUsername(user.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User with username: " + user.getUsername() + " not found"));
         return subjectRepository.findAllByTeacherAndGroup(teacher.getId(), groupId);
     }
 
     @Override
-    public Subject getSubjectById(Long subjectId) {
+    public Subject getById(Long subjectId) {
         return subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new SubjectNotFoundException("Subject with id:" + subjectId + " not found"));
     }
@@ -43,5 +43,13 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public Subject save(Subject subject) {
         return subjectRepository.save(subject);
+    }
+
+    public void delete(Subject subject) {
+        subjectRepository.delete(subject);
+    }
+
+    public Subject update(Subject subject) {
+        return new Subject();
     }
 }

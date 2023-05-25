@@ -1,23 +1,30 @@
 <!DOCTYPE html>
-<html  lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/css/teacher/teacher-subjects.css"/>
 </head>
 <body>
-<h1>PD-44</h1>
-<h2>email: pd44@dut.com</h2>
-<h2>Head of group: Mykyta Medko</h2>
-<h3>email: medko@dut.com</h3>
+<div class="header">
+    <h1><span th:text="${currentGroup.groupName}"></span></h1>
+    <h2>email: <span th:text="${currentGroup.email}"></span></h2>
+    <h2>Староста групи: <span
+            th:text="${currentGroup.headOfGroup.user.firstName + ' ' + currentGroup.headOfGroup.user.lastName}"></span>
+    </h2>
+
+    <a href="">Сторінка заняття в Moodle</a>
+    <a href="">Telegram чат</a>
+    <a href="">Zoom</a>
+</div>
 
 <table>
     <thead>
     <tr>
         <th>N</th>
-        <th>Student</th>
+        <th>Студент</th>
         <th>Email</th>
-        <th>Phone number</th>
+        <th>Номер телефону</th>
     </tr>
     </thead>
     <tbody>
@@ -31,7 +38,7 @@
     </tbody>
 </table>
 
-<h2>Subjects:</h2>
+<h2>Доступні предмети:</h2>
 <ul>
     <li th:each="subject : ${subjects}">
         <a th:href="@{'/teacher/subjects/' + ${groupId} + '/' + ${subject.id} + '/table'}"><span

@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface GroupService {
 
-    List<Student> getStudentsByGroup(Long groupId);
+    List<Group> getForTeacher(String currentPrincipalName);
 
-    List<Group> getGroupsForTeacher(String currentPrincipalName);
-
-    Group getGroupById(Long groupId);
+    Group getById(Long groupId);
 
     Group save(Group group);
+
+    Group update(Group group);
 
     List<Group> getAll();
 }

@@ -4,15 +4,14 @@ import com.koval.diploma.model.Subject;
 import com.koval.diploma.model.User;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface SubjectService {
 
-    List<Subject> getSubjectsForTeacher(User teacher);
+    List<Subject> getForTeacher(User teacher);
 
-    List<Subject> getSubjectsForTeacherByGroup(User user, Long groupId);
+    List<Subject> getForTeacherByGroup(User user, Long groupId);
 
-    Subject getSubjectById(Long subjectId);
+    Subject getById(Long subjectId);
 
     Subject save(Subject subject);
 }

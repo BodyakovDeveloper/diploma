@@ -40,7 +40,7 @@ public class LessonController {
     public String showCreateLessonForm(Model model) {
         // Prepare necessary data for the form
         model.addAttribute("newLesson", new Lesson());
-        model.addAttribute("classTypes", classTypeService.getAllClassTypes());
+        model.addAttribute("classTypes", classTypeService.getAll());
         return "lesson-create";
     }
 
@@ -48,7 +48,7 @@ public class LessonController {
     @PostMapping("/create")
     public String createLesson(@ModelAttribute("newLesson") Lesson lesson) {
         // Save the new lesson using the lessonService
-        lessonService.createLesson(lesson);
+        lessonService.save(lesson);
         return "redirect:/lessons"; // Redirect to the lessons list page
     }
 

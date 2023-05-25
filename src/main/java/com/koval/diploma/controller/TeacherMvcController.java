@@ -38,7 +38,6 @@ public class TeacherMvcController {
     private final StudentService studentService;
     private final ClassTypeService classTypeService;
 
-
     @GetMapping("/dashboard")
     public String showTeacherPage(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -47,7 +46,7 @@ public class TeacherMvcController {
         User user = userService.getByUsername(currentPrincipalName);
         model.addAttribute("user", user);
 
-        List<Group> groups = groupService.getGroupsForTeacher(currentPrincipalName);
+        List<Group> groups = groupService.getForTeacher(currentPrincipalName);
         model.addAttribute("groups", groups);
 
         return "teacher/teacher-dashboard";
@@ -56,15 +55,16 @@ public class TeacherMvcController {
     @GetMapping("/groups/{groupId}/subjects")
     public String getGroupSubjects(Model model, @PathVariable Long groupId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
+        Group group = groupService.getById(groupId);
+        model.addAttribute("currentGroup", group);
         String currentPrincipalName = authentication.getName();
         User user = userService.getByUsername(currentPrincipalName);
         model.addAttribute("user", user);
 
-        List<Student> students = studentService.getStudentByGroup(groupId);
+        List<Student> students = studentService.getStudentsByGroup(groupId);
         model.addAttribute("students", students);
 
-        List<Subject> subjects = subjectService.getSubjectsForTeacherByGroup(user, groupId);
+        List<Subject> subjects = subjectService.getForTeacherByGroup(user, groupId);
         model.addAttribute("subjects", subjects);
 
         return "teacher/subjects";
@@ -78,21 +78,21 @@ public class TeacherMvcController {
         User user = userService.getByUsername(currentPrincipalName);
         model.addAttribute("user", user);
 
-        Subject subject = subjectService.getSubjectById(subjectId);
+        Subject subject = subjectService.getById(subjectId);
         model.addAttribute("subject", subject);
 
-        List<Student> students = studentService.getStudentByGroup(groupId);
+        List<Student> students = studentService.getStudentsByGroup(groupId);
         model.addAttribute("students", students);
         model.addAttribute("numbers", rangeClosed(1, students.size()).boxed().toList());
 
-        Group group = groupService.getGroupById(groupId);
+        Group group = groupService.getById(groupId);
         model.addAttribute("group", group);
 
-        List<ClassType> classTypes = classTypeService.getAllClassTypes();
+        List<ClassType> classTypes = classTypeService.getAll();
         model.addAttribute("classTypes", classTypes);
         model.addAttribute("lesson", new Lesson());
 
-        List<Lesson> lessons = lessonService.getLessonsForTeacherByGroupAndSubject(groupId, subjectId);
+        List<Lesson> lessons = lessonService.getForTeacherByGroupAndSubject(groupId, subjectId);
         model.addAttribute("lessons", lessons);
 
         return "teacher/group-subject";
@@ -106,7 +106,7 @@ public class TeacherMvcController {
         User user = userService.getByUsername(currentPrincipalName);
         model.addAttribute("user", user);
 
-        List<Subject> subjects = subjectService.getSubjectsForTeacher(user);
+        List<Subject> subjects = subjectService.getForTeacher(user);
         model.addAttribute("subjects", subjects);
 
         return "teacher/teacher-dashboard";
